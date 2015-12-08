@@ -1,17 +1,19 @@
 #!/bin/bash
-apt-get update && apt-get install wget -y
+#apt-get update && apt-get install wget -y
 
-echo "deb http://packages.dotdeb.org wheezy-php56 all" > /etc/apt/sources.list.d/php.list
-echo "deb-src http://packages.dotdeb.org wheezy-php56 all" >> /etc/apt/sources.list.d/php.list
+#echo "deb http://packages.dotdeb.org wheezy-php56 all" > /etc/apt/sources.list.d/php.list
+#echo "deb-src http://packages.dotdeb.org wheezy-php56 all" >> /etc/apt/sources.list.d/php.list
 
-wget https://www.dotdeb.org/dotdeb.gpg --no-check-certificate
-apt-key add dotdeb.gpg
+#cd /root
 
-apt-get update
+#wget -q https://www.dotdeb.org/dotdeb.gpg --no-check-certificate
+#apt-key add dotdeb.gpg
 
-echo $PHP_VERSION
+#apt-get update
 
-apt-get install build-essential php5 php5-curl php5-gd php5-mcrypt -y
+#echo $PHP_VERSION
+
+#apt-get install build-essential php5 php5-curl php5-gd php5-mcrypt -y
 
 #wget https://getcomposer.org/download/1.0.0-alpha11/composer.phar
 #mv /composer.phar /usr/bin/composer
