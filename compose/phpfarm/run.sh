@@ -1,10 +1,10 @@
 #!/bin/bash
 apt-get update && apt-get install wget -y
 
-echo "deb http://packages.dotdeb.org wheezy-php56 all \
-deb-src http://packages.dotdeb.org wheezy-php56 all" > /etc/apt/sources.list.d/php.list
+echo "deb http://packages.dotdeb.org wheezy-php56 all" > /etc/apt/sources.list.d/php.list
+echo "deb-src http://packages.dotdeb.org wheezy-php56 all" >> /etc/apt/sources.list.d/php.list
 
-wget https://www.dotdeb.org/dotdeb.gpg
+wget https://www.dotdeb.org/dotdeb.gpg --no-check-certificate
 apt-key add dotdeb.gpg
 
 apt-get update
