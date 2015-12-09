@@ -1,6 +1,12 @@
 #!/bin/bash
 #apt-get update && apt-get install wget -y
 
+composer self-update
+
+echo $PHP_VERSION
+
+
+
 #echo "deb http://packages.dotdeb.org wheezy-php56 all" > /etc/apt/sources.list.d/php.list
 #echo "deb-src http://packages.dotdeb.org wheezy-php56 all" >> /etc/apt/sources.list.d/php.list
 

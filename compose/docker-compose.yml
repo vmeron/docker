@@ -10,6 +10,8 @@ db:
 
 php:
     image: splitbrain/phpfarm
+    environment:
+        PHP_VERSION: 55
     volumes:
         - /Users/vmeron/www/magento2:/var/www
     links:
