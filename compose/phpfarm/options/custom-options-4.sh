@@ -1,8 +1,11 @@
 #!/bin/sh
 
+#--enable-fastcgi \
+#--enable-force-cgi-redirect \
 
 configoptions="\
 --with-libdir=/lib/x86_64-linux-gnu \
+--enable-cli \
 --enable-memory-limit \
 --with-regex=php \
 --enable-sysvsem \
@@ -18,22 +21,21 @@ configoptions="\
 --enable-shmop \
 --with-libxml-dir=/usr \
 --with-kerberos=/usr \
---with-openssl \
+--with-openssl-dir=/usr/lib/x86_64-linux-gnu/openssl-1.0.0 \
 --enable-dbx \
 --with-system-tzdata \
---with-mysql=/usr/bin/mysql_config \
---with-mysqli=/usr/bin/mysql_config \
+--with-mysql \
+--with-mysqli \
 --enable-pdo \
---with-pdo-mysql=shared \
---enable-fastcgi \
---enable-force-cgi-redirect \
+--with-pdo-mysql \
+--with-pdo-sqlite \
 --with-curl \
 --enable-bcmath \
 --enable-calendar \
 --enable-exif \
 --enable-ftp \
 --with-gd \
---with-jpeg-dir=shared,/usr \
+--with-jpeg-dir \
 --with-png-dir \
 --with-freetype-dir=/usr \
 --with-t1lib \

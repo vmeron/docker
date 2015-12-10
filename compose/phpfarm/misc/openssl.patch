@@ -1,0 +1,21 @@
+--- openssl.c.orig      2012-11-15 13:54:21.228464238 +0100
++++ openssl.c   2012-11-15 13:55:21.010589034 +0100
+@@ -179,8 +186,8 @@
+ static char default_ssl_conf_filename[MAXPATHLEN];
+
+ struct php_x509_request {
+-       LHASH * global_config;  /* Global SSL config */
+-       LHASH * req_config;             /* SSL config for this request */
++       LHASH_OF(CONF_VALUE) * global_config;   /* Global SSL config */
++       LHASH_OF(CONF_VALUE) * req_config;              /* SSL config for this request */
+        const EVP_MD * md_alg;
+        const EVP_MD * digest;
+        char    * section_name,
+@@ -340,7 +345,7 @@
+                const char * section_label,
+                const char * config_filename,
+                const char * section,
+-               LHASH * config TSRMLS_DC)
++               LHASH_OF(CONF_VALUE) * config TSRMLS_DC)
+ {
+        X509V3_CTX ctx;

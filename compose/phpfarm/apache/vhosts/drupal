@@ -1,0 +1,9 @@
+<VirtualHost *:80>
+    DocumentRoot /var/www/drupal
+    <Directory "/var/www/drupal" >
+        Options FollowSymLinks
+        AllowOverride All
+        AddHandler php-cgi .php
+        Action php-cgi /root/php-cgi-wrapper
+    </Directory>
+</VirtualHost>

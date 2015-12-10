@@ -5,6 +5,7 @@ composer self-update
 
 echo $PHP_VERSION
 
+#Switch php version
 
 
 #echo "deb http://packages.dotdeb.org wheezy-php56 all" > /etc/apt/sources.list.d/php.list
