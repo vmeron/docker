@@ -4,7 +4,7 @@ ENV PHP_VERSION 56
 ENV SVN_USER svnReadonly
 ENV SVN_PASS svnReadonly
 
-#RUN apt-get update && apt-get install -y wget
+RUN apt-get update && apt-get install -y wget
 #RUN echo "deb http://packages.dotdeb.org wheezy-php$PHP_VERSION all" > /etc/apt/sources.list.d/php.list
 #RUN echo "deb-src http://packages.dotdeb.org wheezy-phpPHP_VERSION all" >> /etc/apt/sources.list.d/php.list
 
@@ -36,7 +36,9 @@ RUN apt-get update && apt-get -y install git \
     libsnmp-dev \
     libtidy-dev \
     libxslt1-dev \
-    libmcrypt-dev
+    libmcrypt-dev \
+    flex
+
 
 #phpfarm
 WORKDIR /root
@@ -46,8 +48,6 @@ RUN git clone git://git.code.sf.net/p/phpfarm/code phpfarm
 RUN ln -s /root/custom-options.sh /root/phpfarm/src
 
 WORKDIR /root/phpfarm/src
-
-RUN
 
 #Build versions
 # php-2.0b12

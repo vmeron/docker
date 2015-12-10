@@ -33,7 +33,7 @@ configoptions="\
 --enable-exif \
 --enable-ftp \
 --with-gd \
---with-jpeg-dir=/usr \
+--with-jpeg-dir=shared,/usr \
 --with-png-dir \
 --with-freetype-dir=/usr \
 --with-t1lib \
