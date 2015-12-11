@@ -1,11 +1,15 @@
 #!/bin/bash
 #apt-get update && apt-get install wget -y
 
-composer self-update
+#composer self-update
 
-echo $PHP_VERSION
+echo -e $PHP_VERSION
 
 #Switch php version
+
+/root/phpfarm/inst/bin/switch-phpfarm $PHP_VERSION
+/etc/init.d/apache2 start
+
 
 
 #echo "deb http://packages.dotdeb.org wheezy-php56 all" > /etc/apt/sources.list.d/php.list
