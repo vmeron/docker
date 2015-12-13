@@ -1,12 +1,18 @@
 FROM debian:wheezy
 
 #@TODO : Find another way to do this more securely
-ARG SVN_USER
-ARG SVN_PASS
+RUN apt-get update -qq \
+    && apt-get install -qq wget \
+    && wget -q -O - http://opensource.wandisco.com/wandisco-debian.gpg | apt-key add -
 
+COPY apt/subversion.list /etc/apt/sources.list.d/subversion.list
 COPY apt/contrib.list /etc/apt/sources.list.d/contrib.list
+COPY options/custom-options-4.sh /root/custom-options-4.sh
+COPY options/custom-options-5.sh /root/custom-options-5.sh
+COPY run.sh /run.sh
 
-RUN apt-get update -qq && apt-get install -qq wget apache2 git-core \
+RUN apt-get update -qq && apt-get install -qq apache2 git-core \
+    libapache2-mod-fastcgi \
     php5 \
     subversion \
     curl \
@@ -37,8 +43,9 @@ RUN apt-get update -qq && apt-get install -qq wget apache2 git-core \
     libmcrypt-dev \
     libssl-dev \
     libsslcommon2-dev \
-    flex
-
+    flex \
+    && apt-get clean --purge -y \
+    && apt-get autoremove --purge -y -qq
 
 #phpfarm
 WORKDIR /root
@@ -47,13 +54,15 @@ WORKDIR /root
 RUN git clone https://github.com/cweiske/phpfarm.git phpfarm
 #RUN git clone https://github.com/yfix/phpfarm.git phpfarm
 
-COPY options/custom-options-4.sh /root/custom-options-4.sh
-COPY options/custom-options-5.sh /root/custom-options-5.sh
-
-RUN ln -s /root/custom-options-4.sh /root/phpfarm/src
-RUN ln -s /root/custom-options-5.sh /root/phpfarm/src
-RUN ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib
-RUN ln -s /usr/lib/x86_64-linux-gnu/libpng.so /usr/lib
+RUN ln -s /root/custom-options-4.sh /root/phpfarm/src \
+    && ln -s /root/custom-options-5.sh /root/phpfarm/src \
+    && ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib \
+    && ln -s /usr/lib/x86_64-linux-gnu/libpng.so /usr/lib \
+    && cd phpfarm/src \
+    && ./compile.sh 5.5.10 \
+    || cd ../../ \
+    && rm -rf ./phpfarm/src \
+    && apt-get remove build-essential --purge -y -qq
 
 #Build versions
 # php-2.0b12
@@ -62,28 +71,25 @@ RUN ln -s /usr/lib/x86_64-linux-gnu/libpng.so /usr/lib
 # php-5.5.10
 # php-5.6.2
 
-WORKDIR /root/phpfarm/src
 #RUN ./compile.sh 4.4.9 || :
 #RUN ./compile.sh 5.6.2 || :
-RUN ./compile.sh 5.5.10 || :
-
-WORKDIR /root/phpfarm
-RUN rm -rf src && apt-get clean --purge
 
 #Setup apache2
-WORKDIR /root
 COPY apache/php-cgi-wrapper.sh php-cgi-wrapper.sh
 COPY apache/vhosts/drupal.conf /etc/apache2/sites-available/drupal.conf
 COPY apache/conf.d/cgi.conf /etc/apache2/conf.d/cgi.conf
 
 RUN chmod +x php-cgi-wrapper.sh \
-    && apt-get install -qq libapache2-mod-fastcgi \
     && a2ensite drupal \
     && a2dissite 000-default \
     && a2enmod rewrite fastcgi actions vhost_alias && service apache2 restart
 
 #Fetch drupal install
-RUN svn co $SVN_DRUPAL_REPO /var/www/drupal7 --username $SVN_USER --password $SVN_PASS \
+ARG SVN_USER
+ARG SVN_PASS
+ARG SVN_REPO
+
+RUN svn co --trust-server-cert --non-interactive $SVN_REPO /var/www/drupal7 --username $SVN_USER --password $SVN_PASS \
     && rm -rf /var/www/drupal7/default
 RUN mkdir /var/www/drupal7/sites/local.com \
     && ln -s /var/www/drupal7/sites/local.com /drupal7
@@ -99,7 +105,7 @@ RUN mkdir /var/www/drupal7/sites/local.com \
 #&& ln -s /usr/local/src/drush/drush /usr/bin/drush \
 #&& composer install
 
-COPY run.sh /run.sh
+
 RUN chmod +x /run.sh
 
 ENTRYPOINT ["/bin/bash"]

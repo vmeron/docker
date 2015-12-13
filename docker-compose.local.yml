@@ -1,0 +1,3 @@
+php:
+    volumes:
+        - /Users/vmeron/www/gimra:/var/www/drupal7/sites
